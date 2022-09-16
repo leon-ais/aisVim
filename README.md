@@ -26,6 +26,7 @@ sh install.sh
 # 配置
 
 * 参考.vimrc
+* 修改后生效方式：在vim命令模式下输入:source ~/.vimrc
 
 
 

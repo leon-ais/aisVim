@@ -240,8 +240,8 @@ autocmd Filetype java nnoremap <F1> :w <bar> exec '!javac '.shellescape('%'). ' 
 autocmd filetype java nnoremap <F2> :w <bar> exec '!java -cp ./bin '.shellescape('%:r')<CR>
 
 let g:tlist_markdown_settings = 'markdown;h:Headlins'
-"新建.c,.h,.sh,.Java文件，自动插入文件头
-autocmd BufNewFile *.cpp,*.[ch],*.sh,*.Java,*.go exec ":call SetTitle()"
+"新建.c,.cc,.cpp,.h,.sh,.Java,.go文件，自动插入文件头
+autocmd BufNewFile *.cc,*.cpp,*.[ch],*.sh,*.Java,*.go exec ":call SetTitle()"
 """定义函数SetTitle，自动插入文件头
 func SetTitle()
     "如果文件类型为.sh文件
@@ -264,7 +264,7 @@ func SetTitle()
         call append(line(".")+5, " ************************************************************************/")
         call append(line(".")+6, "")
     endif
-    if expand("%:e") == 'h'
+    if &filetype == 'h'
         call append(line(".")+7,   "#ifndef __".toupper(expand("%:r"))."_H"))
         call append(line(".")+8,   "#define __".toupper(expand("%:r"))."_H"))
         call append(line(".")+9, "")
