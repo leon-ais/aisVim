@@ -8,6 +8,8 @@ execute pathogen#infect()
 " syntax on
 filetype plugin indent on
 
+"设置真彩色
+set termguicolors
 "高亮搜索关键词"
 let g:ackhighlight = 1
 "修改快速预览窗口高度为15
@@ -217,7 +219,6 @@ set ruler           " 显示标尺"
 autocmd InsertEnter * se cul    " 用浅色高亮当前行"
 set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示
 
-" :colorscheme desert     " 设置主题
 " vim-commentary style set 注释针对不同语言的注释方法
 autocmd FileType cpp set commentstring=//\ %s
 autocmd FileType php set commentstring=//\ %s
@@ -344,7 +345,9 @@ func SetCC()
 endfunc
 
 " 使用的背景主题
-colorscheme Monokai_Gavin
+" colorscheme desert     " 设置主题
+" colorscheme Monokai_Gavin
+  colorscheme seoul256 
 " 添加自动补全字典
 au FileType php setlocal dict+=~/.vim/dictionary/php_keywords_list.txt
 au FileType cpp setlocal dict+=~/.vim/dictionary/cpp_keywords_list.txt
