@@ -1,5 +1,7 @@
 " Hello，我是程序员leon-ais，欢迎添加我的微信号：leon-ais
 "
+inoremap kj <ESC>
+"
 " 定义快捷键的前缀，即<Leader>
 let mapleader=";"
 
@@ -61,6 +63,8 @@ set noswapfile
 
 " 禁止光标闪烁
 " set gcr=a:block-blinkon0
+" 十字光标
+autocmd FileType cpp set cul cuc colorcolumn=81
 
 " ack搜索时不打开第一个搜索文件
 map <Leader>fw :Ack! <Space>
@@ -235,7 +239,7 @@ inoremap <C-v> <Esc>:r ~/tmp/clipboard.txt <CR>
 " 编译快捷键
 autocmd filetype python nnoremap <F5> :w <bar> exec '!python '.shellescape('%')<CR> 
 autocmd filetype c nnoremap <F5> :w <bar> exec '!gcc '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
-autocmd filetype cpp nnoremap <F5> :w <bar> exec '!g++ --std=c++11 -pthread '.shellescape('%').' -o ./bin/'.shellescape('%:r').' && ./bin/'.shellescape('%:r')<CR>
+autocmd filetype cpp nnoremap <F5> :w <bar> exec '!g++ -g --std=c++11 -pthread '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
 " autocmd filetype dot nnoremap <F5> :w <bar> exec '!dot -Tsvg '.shellescape('%').' > ./svg/'.shellescape('%:r').' && open ./bin/'.shellescape('%:r')<CR>
 autocmd filetype dot nnoremap <F5> :w <bar> exec '!dot -Tsvg sqlparse.dot > sqlparse.svg'<CR>
 autocmd Filetype java nnoremap <F5> :w <bar> exec '!javac '.shellescape('%'). ' -d ./bin'<CR>
@@ -243,7 +247,7 @@ autocmd filetype java nnoremap <F6> :w <bar> exec '!java -cp ./bin '.shellescape
 
 let g:tlist_markdown_settings = 'markdown;h:Headlins'
 "新建.c,.cc,.cpp,.h,.sh,.Java,.go文件，自动插入文件头
-autocmd BufNewFile *.cc,*.cpp,*.[ch],*.sh,*.Java,*.go exec ":call SetTitle()"
+autocmd BufNewFile *.cc,*.cpp,*.c,*.h,*.sh,*.Java,*.go exec ":call SetTitle()"
 """定义函数SetTitle，自动插入文件头
 func SetTitle()
     "如果文件类型为.sh文件
@@ -266,15 +270,15 @@ func SetTitle()
         call append(line(".")+5, " ************************************************************************/")
         call append(line(".")+6, "")
     endif
-    if &filetype == 'h'
-        call append(line(".")+7,   "#ifndef __".toupper(expand("%:r"))."_H"))
-        call append(line(".")+8,   "#define __".toupper(expand("%:r"))."_H"))
+    if expand("%:e") == 'h'
+        call append(line(".")+7,   "#ifndef __".toupper(expand("%:r"))."_H")
+        call append(line(".")+8,   "#define __".toupper(expand("%:r"))."_H")
         call append(line(".")+9, "")
-        call append(line(".")+10,  "#endif")
+        call append(line(".")+10,  "#endif // __".toupper(expand("%:r"))."_H")
     elseif expand("%:e") == 'cpp'
-        call append(line(".")+7, "#include <iostream>")
-        call append(line(".")+8, "#include <cstdio>")
-        call append(line(".")+9, "#include <cstdlib>")
+        call append(line(".")+7,  "#include <iostream>")
+        call append(line(".")+8,  "#include <cstdio>")
+        call append(line(".")+9,  "#include <cstdlib>")
         call append(line(".")+10, "#include <vector>")
         call append(line(".")+11, "#include <stack>")
         call append(line(".")+12, "#include <queue>")
@@ -286,7 +290,7 @@ func SetTitle()
         call append(line(".")+18, "")
         call append(line(".")+19, "int main() {")
         call append(line(".")+20, "")
-        call append(line(".")+21, "    cout << \"\" << endl;")
+        call append(line(".")+21, "    cout << \":\" << endl;")
         call append(line(".")+22, "    return EXIT_SUCCESS;")
         call append(line(".")+23, "}")
     elseif expand("%:e") == 'c'
@@ -362,7 +366,7 @@ let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_
 nnoremap <Leader>p :SyntasticToggleMode<CR> :w<CR>
 " set vim-syntastic compiler 
 let g:syntastic_cpp_compiler = 'g++'
-let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+let g:syntastic_cpp_compiler_options = ' -g -std=c++11 -stdlib=libc++'
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
