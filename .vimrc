@@ -1,6 +1,7 @@
 " Hello，我是程序员leon-ais，欢迎添加我的微信号：leon-ais
 "
-inoremap kj <ESC>
+" <ESC> 映射 
+inoremap kj <ESC>l
 "
 " 定义快捷键的前缀，即<Leader>
 let mapleader=";"
@@ -41,10 +42,10 @@ set incsearch		" do incremental searching
 "设置非兼容模式
 set nocp
 
-"set encoding=utf-8
-""set encoding=gb2312
-set langmenu=zh_CN.gb2312
-""language message zh_CN.gb2312
+set encoding=utf-8
+"set encoding=gb2312
+"set langmenu=zh_CN.gb2312
+"language message zh_CN.gb2312
 
 set fileencoding=gbk2312
 set ts=4
@@ -63,9 +64,11 @@ set noswapfile
 
 " 禁止光标闪烁
 " set gcr=a:block-blinkon0
-" 十字光标
-autocmd FileType cpp set cul cuc colorcolumn=81
 
+" 十字光标
+set cursorline cursorcolumn
+set colorcolumn=81
+highlight ColorColumn ctermbg=0 guibg=black
 " ack搜索时不打开第一个搜索文件
 map <Leader>fw :Ack! <Space>
 " AckFile不打开第一个搜索文件
@@ -123,7 +126,7 @@ nmap <Leader>s :Sex<CR>
 " 竖直分隔
 nmap <Leader>v :Vex<CR>
 " 全局替换
-nmap <Leader>r :%s/fileName-/fileName+/g
+nmap <Leader>r :%s/-/+/g
 " align 表格对齐
 nmap <Leader>t :Tab /
 " 打tag
@@ -202,9 +205,12 @@ autocmd FileType cpp,java inoremap { {<CR>}<ESC>kA<CR>
 set fenc=" "
 "显示匹配
 set showmatch
+"优化<ESC>效果
+inoremap <ESC> <ESC>l
 "括号匹配
 inoremap ( ()<ESC>i
 inoremap [ []<ESC>i
+inoremap < <><ESC>i
 inoremap ' ''<ESC>i
 inoremap " ""<ESC>i
 set selectmode=mouse,key
@@ -240,14 +246,13 @@ inoremap <C-v> <Esc>:r ~/tmp/clipboard.txt <CR>
 autocmd filetype python nnoremap <F5> :w <bar> exec '!python '.shellescape('%')<CR> 
 autocmd filetype c nnoremap <F5> :w <bar> exec '!gcc '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
 autocmd filetype cpp nnoremap <F5> :w <bar> exec '!g++ -g --std=c++11 -pthread '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
-" autocmd filetype dot nnoremap <F5> :w <bar> exec '!dot -Tsvg '.shellescape('%').' > ./svg/'.shellescape('%:r').' && open ./bin/'.shellescape('%:r')<CR>
 autocmd filetype dot nnoremap <F5> :w <bar> exec '!dot -Tsvg sqlparse.dot > sqlparse.svg'<CR>
 autocmd Filetype java nnoremap <F5> :w <bar> exec '!javac '.shellescape('%'). ' -d ./bin'<CR>
 autocmd filetype java nnoremap <F6> :w <bar> exec '!java -cp ./bin '.shellescape('%:r')<CR>
 
 let g:tlist_markdown_settings = 'markdown;h:Headlins'
-"新建.c,.cc,.cpp,.h,.sh,.Java,.go文件，自动插入文件头
-autocmd BufNewFile *.cc,*.cpp,*.c,*.h,*.sh,*.Java,*.go exec ":call SetTitle()"
+"新建.c,.h,.sh,.Java文件，自动插入文件头
+autocmd BufNewFile *.c,*.cpp,*.h,*.sh,*.Java,*.go exec ":call SetTitle()"
 """定义函数SetTitle，自动插入文件头
 func SetTitle()
     "如果文件类型为.sh文件
@@ -271,43 +276,35 @@ func SetTitle()
         call append(line(".")+6, "")
     endif
     if expand("%:e") == 'h'
-        call append(line(".")+7,   "#ifndef __".toupper(expand("%:r"))."_H")
-        call append(line(".")+8,   "#define __".toupper(expand("%:r"))."_H")
+        call append(line(".")+7, "#ifndef  _".toupper(expand("%:r"))."_H")
+        call append(line(".")+8, "#define  _".toupper(expand("%:r"))."_H")
         call append(line(".")+9, "")
-        call append(line(".")+10,  "#endif // __".toupper(expand("%:r"))."_H")
+        call append(line(".")+10,"#endif //_".toupper(expand("%:r"))."_H")
     elseif expand("%:e") == 'cpp'
-        call append(line(".")+7,  "#include <iostream>")
-        call append(line(".")+8,  "#include <cstdio>")
-        call append(line(".")+9,  "#include <cstdlib>")
-        call append(line(".")+10, "#include <vector>")
-        call append(line(".")+11, "#include <stack>")
-        call append(line(".")+12, "#include <queue>")
-        call append(line(".")+13, "#include <string>")
-        call append(line(".")+14, "#include <set>")
-        call append(line(".")+15, "#include <map>")
-        call append(line(".")+16, "#include <algorithm>")
-        call append(line(".")+17, "using namespace std;")
-        call append(line(".")+18, "")
-        call append(line(".")+19, "int main() {")
-        call append(line(".")+20, "")
-        call append(line(".")+21, "    cout << \":\" << endl;")
-        call append(line(".")+22, "    return EXIT_SUCCESS;")
-        call append(line(".")+23, "}")
+        call append(line(".")+7, "#include <bits/stdc++.h>")
+        call append(line(".")+8, "#include <algorithm>")
+        call append(line(".")+9, "")
+        call append(line(".")+10,"using namespace std;")
+        call append(line(".")+11,"")
+        call append(line(".")+12,"int main(int argc, char* argv[])")
+        call append(line(".")+13,"{")
+        call append(line(".")+14,"    cout << \":\" << endl;")
+        call append(line(".")+15,"    return 0;")
+        call append(line(".")+16,"}")
     elseif expand("%:e") == 'c'
         call append(line(".")+7, "#include <stdio.h>")
         call append(line(".")+8, "#include <stdlib.h>")
         call append(line(".")+9, "#include <string.h>")
-        call append(line(".")+10, "")
-        call append(line(".")+11, "int main(int argc, char* argv[])")
-        call append(line(".")+12, "{")
-        call append(line(".")+13, "")
-        call append(line(".")+14, "    return 0;")
-        call append(line(".")+15, "}")
+        call append(line(".")+10,"")
+        call append(line(".")+11,"int main(int argc, char* argv[])")
+        call append(line(".")+12,"{")
+        call append(line(".")+13,"    printf(\".\");")
+        call append(line(".")+14,"    return 0;")
+        call append(line(".")+15,"}")
     endif
     "新建文件后，自动定位到文件末尾
     autocmd BufNewFile * normal G
 endfunc
-
 
 " shortcut for markdown
 " 创建时间快捷键for markdown
@@ -350,9 +347,9 @@ func SetCC()
 endfunc
 
 " 使用的背景主题
-" colorscheme desert     " 设置主题
+  colorscheme desert     " 设置主题
 " colorscheme Monokai_Gavin
-  colorscheme seoul256 
+" colorscheme seoul256 
 " 添加自动补全字典
 au FileType php setlocal dict+=~/.vim/dictionary/php_keywords_list.txt
 au FileType cpp setlocal dict+=~/.vim/dictionary/cpp_keywords_list.txt
@@ -366,7 +363,7 @@ let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_
 nnoremap <Leader>p :SyntasticToggleMode<CR> :w<CR>
 " set vim-syntastic compiler 
 let g:syntastic_cpp_compiler = 'g++'
-let g:syntastic_cpp_compiler_options = ' -g -std=c++11 -stdlib=libc++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -386,7 +383,7 @@ autocmd BufEnter * silent! lcd %:p:h
 " :set completeopt+=noinsert
 
 set completeopt=menu,menuone  
-let OmniCpp_MayCompleteDot=1    "  打开  . 操作符
+let OmniCpp_MayCompleteDot=1    " 打开  . 操作符
 let OmniCpp_MayCompleteArrow=1  " 打开 -> 操作符
 let OmniCpp_MayCompleteScope=1  " 打开 :: 操作符
 let OmniCpp_NamespaceSearch=1   " 打开命名空间
