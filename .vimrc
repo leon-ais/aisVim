@@ -201,6 +201,7 @@ endif
 
 "花括号自动格式化，首行一个tab
 autocmd FileType cpp,java inoremap { {<CR>}<ESC>kA<CR>
+autocmd FileType cpp,java inoremap {} {}
 
 set fenc=" "
 "显示匹配
@@ -213,6 +214,10 @@ inoremap [ []<ESC>i
 inoremap < <><ESC>i
 inoremap ' ''<ESC>i
 inoremap " ""<ESC>i
+"括号还原
+inoremap () ()
+inoremap [] []
+inoremap << <<
 set selectmode=mouse,key
 set selection=exclusive
 set mouse=n "可视模式下使用鼠标，set mouse=a这个命令导致在vim下复制粘贴不好用
