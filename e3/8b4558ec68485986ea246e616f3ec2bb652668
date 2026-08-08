@@ -1,0 +1,12 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.2",
+  "base_commit_sha": "e38b4558ec68485986ea246e616f3ec2bb652668",
+  "prompts": {},
+  "humans": {
+    "h_b59562a259d032": {
+      "author": "leon-ais <leon_ais@qq.com>"
+    }
+  }
+}
