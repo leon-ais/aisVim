@@ -23,6 +23,14 @@ cd aisVim
 sh install.sh
 ```
 
+`install.sh` 会自动把当前目录的内容复制到 `~/.aisVim`（隐藏目录，避免误删），并在家目录下创建软链接：
+
+* `~/.vimrc`  -> `~/.aisVim/.vimrc`
+* `~/.vim`    -> `~/.aisVim/.vim`
+* `~/.ctags`  -> `~/.aisVim/.ctags`
+
+若 `~/.aisVim` 或上述软链接已存在，会自动按时间戳备份后再覆盖，因此原下载目录（如 `~/Downloads/aisVim`）安装完成后可随意删除。
+
 # 配置
 
 * 参考.vimrc

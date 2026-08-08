@@ -8,10 +8,29 @@
 function digitaldatetime() {
     echo `date +"%Y%m%d%H%M%S"`
 }
-aisVim=`pwd -P`
-cd $HOME
+
+SRC_DIR=`pwd -P`
+AISVIM_DIR="$HOME/.aisVim"
 
 echo "\033[0;35mStart to install vim-conf\033[0m"
+
+# 1. 把当前目录复制到 ~/.aisVim（若已在 ~/.aisVim 则跳过）
+if [ "$SRC_DIR" != "$AISVIM_DIR" ]; then
+    echo "\033[0;36mInstalling aisVim to $AISVIM_DIR\033[0m"
+    # 若 ~/.aisVim 已存在，先备份
+    if [ -e "$AISVIM_DIR" ] || [ -L "$AISVIM_DIR" ]; then
+        echo "\033[0;33mFound existing $AISVIM_DIR.\033[0m \033[0;32mBacking up to $AISVIM_DIR.`digitaldatetime`\033[0m"
+        mv "$AISVIM_DIR" "$AISVIM_DIR.`digitaldatetime`"
+    fi
+    echo "\033[0;32mcp -R \"$SRC_DIR\" \"$AISVIM_DIR\"\033[0m"
+    cp -R "$SRC_DIR" "$AISVIM_DIR"
+else
+    echo "\033[0;36mAlready running in $AISVIM_DIR, skip copying\033[0m"
+fi
+
+cd $HOME
+
+# 2. 备份并重建家目录下的软链接（指向 ~/.aisVim）
 echo "\033[0;36mLooking for an existing vim config...\033[0m"
 if [ -f ~/.vimrc ] || [ -h ~/.vimrc ]; then
     echo "\033[0;33mFound ~/.vimrc.\033[0m \033[0;32mBacking up to ~/.vimrc.`digitaldatetime`\033[0m";
@@ -28,13 +47,13 @@ if [ -d ~/.vim ]; then
     mv ~/.vim ~/.vim.`digitaldatetime`;
 fi
 
-echo "\033[0;36mCopying .vimrc and .vim\033[0m"
-echo "\033[0;32mln -s ${aisVim}/.vimrc .vimrc\033[0m"
-ln -s ${aisVim}/.vimrc .vimrc
-echo "\033[0;32mln -s ${aisVim}/.vim .vim\033[0m"
-ln -s ${aisVim}/.vim .vim
-echo "\033[0;32mln -s ${aisVim}/.ctags .ctags\033[0m"
-ln -s ${aisVim}/.ctags .ctags
+echo "\033[0;36mCreating symlinks\033[0m"
+echo "\033[0;32mln -s ${AISVIM_DIR}/.vimrc .vimrc\033[0m"
+ln -s ${AISVIM_DIR}/.vimrc .vimrc
+echo "\033[0;32mln -s ${AISVIM_DIR}/.vim .vim\033[0m"
+ln -s ${AISVIM_DIR}/.vim .vim
+echo "\033[0;32mln -s ${AISVIM_DIR}/.ctags .ctags\033[0m"
+ln -s ${AISVIM_DIR}/.ctags .ctags
  #             __      ___           
  #         _   \ \    / (_)          
  #    __ _(_)___\ \  / / _ _ __ ___  
