@@ -1,0 +1,40 @@
+install.sh
+  s_6a388828dd6030::t_f8a3c2700b8905 12-13,16-33,50-56
+  s_6a388828dd6030::t_77051f6da449e1 11
+README.md
+  s_6a388828dd6030::t_3b6fcd326dfdb5 26-33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.2",
+  "base_commit_sha": "591312dccb3e94a4104debe9977acde750b871b6",
+  "prompts": {},
+  "humans": {
+    "h_b59562a259d032": {
+      "author": "leon-ais <leon_ais@qq.com>"
+    }
+  },
+  "sessions": {
+    "s_6a388828dd6030": {
+      "agent_id": {
+        "tool": "trae",
+        "id": "6a76a54d178fa2908293347f",
+        "model": "glm-5.2"
+      },
+      "human_author": "leon-ais <leon_ais@qq.com>",
+      "custom_attributes": {
+        "external_session_id": "6a76a54d178fa2908293347f",
+        "tool_type": "builtin",
+        "edit_kind": "file_edit",
+        "dedupe_key": "6a76a54d178fa2908293347f:6a76aa83178fa290829334b6:afterEdit:e1d1f9e8",
+        "operation_id": "6a76aa83178fa290829334b6",
+        "session_id": "6a76a54d178fa2908293347f",
+        "tool_id": "icube:applyChatSnapshotPatch",
+        "tool_use_id": "6a76aa83178fa290829334b6",
+        "source_scene": "agent",
+        "client_type": "ide",
+        "runtime_client": "trae-tob-git-ai"
+      }
+    }
+  }
+}
